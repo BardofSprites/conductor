@@ -1,6 +1,8 @@
 * Conductor
 A Haskell music organizer with a metadata composition language
 
+[[file:conductor.png]]
+
 ** Syntax - IN PROGRESS
 Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u playlist file]] with the tracks that are obtained with the conditions provided:
 #+begin_src
