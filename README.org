@@ -6,3 +6,22 @@ Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u play
 #+begin_src
   songs := [filter(artist == "Artist Name") OR filter(genre == "Hip Hop")] AND (year > 1980)
 #+end_src
+
+* Planned features
+1. [X] Data model for songs (with fields like artist, genre, year).
+2. [-] Parser for filter language (using Megaparsec).
+   + [X] Parser for Basic Syntax
+     + [X] Comparison
+     + [X] Operator
+     + [X] Values
+     + [X] Fields (Title, Artist, etc)
+     + [X] FieldType
+     + [X] Comparison validations
+   + [ ] Parsers for commands
+     + [ ] =IN PROGRESS= Filter
+     + [ ] Limit
+     + [ ] Sort
+3. [ ] Evaluator that applies filters to song metadata.
+4. [ ] Filesystem code to copy/move matched files into target directories.
+5. [ ] Add playlist generation or metadata tagging features.
+6. [ ] CLI interface to specify source dirs, filters, and targets.
