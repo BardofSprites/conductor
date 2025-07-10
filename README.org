@@ -1,0 +1,2 @@
+* Conductor
+A Haskell music organizer with a metadata composition language

@@ -1,0 +1,1 @@
+songs := filter(artist == "Artist Name") OR filter(genre == "Hip Hop") AND (year > 1980)
