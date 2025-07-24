@@ -1,16 +1,24 @@
 module Filter where
 
-import qualified Syntax as S
+import qualified Syntax as C
+import Data.Void
+import Text.Megaparsec
+import Text.Megaparsec.Char (char, string, space, letterChar)
 
--- the entire expression
--- example: filter(artist == "Artist Name") OR filter(genre == "Hip Hop")
---          |_         FilterExp         _| |  |_      FilterExp       _|
---                                          |
---                                      comparison
+type Filter = C.Comparison
+
 data FilterExpr
- = Filter Comparison
- | And FilterExpr FilterExpr
- | Or FilterExpr FilterExpr
- | Parens FilterExpr
- deriving (Show, Eq)
+  = Single Filter
+  | And FilterExpr FilterExpr
+  | Or  FilterExpr FilterExpr
+  deriving (Show, Eq)
 
+type Parser = Parsec Void String
+
+filterParser :: Parser Filter
+filterParser = do
+  _ <- string "filter"
+  _ <- char '('
+  comp <- C.comparisonParser
+  _ <- char ')'
+  return comp  -- type Filter = Comparison
