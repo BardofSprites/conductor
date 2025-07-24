@@ -1,4 +1,4 @@
-module Sort where
+module Commands.Sort where
 
 import qualified Syntax as C
 import Data.Void

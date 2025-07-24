@@ -1,4 +1,4 @@
-module Filter where
+module Commands.Filter where
 
 import qualified Syntax as C
 import Data.Void

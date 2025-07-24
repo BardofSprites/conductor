@@ -1,4 +1,4 @@
-module Limit where
+module Commands.Limit where
 
 import qualified Syntax as C
 import qualified Parameters as P
