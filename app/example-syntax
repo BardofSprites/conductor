@@ -1,1 +1,3 @@
-songs := filter(artist == "Artist Name") OR filter(genre == "Hip Hop") AND (year > 1980)
+songs <- filter(artist == "Nujabes")
+      || filter(genre == "Hip Hop")
+      && limit(year > 1990)

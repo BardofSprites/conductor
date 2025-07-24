@@ -5,8 +5,13 @@ A Haskell music organizer with a metadata composition language
 
 ** Syntax - IN PROGRESS
 Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u playlist file]] with the tracks that are obtained with the conditions provided:
-#+begin_src
-  songs := [filter(artist == "Artist Name") OR filter(genre == "Hip Hop")] AND (year > 1980)
+#+begin_src haskell
+  songs <- filter(artist == "Nujabes") -- 1. adds Nujabes songs to set
+        || filter(genre == "Hip Hop")  -- 2. adds Hip Hop songs to set
+        && limit(year > 1990)          -- 3. limit the set to songs made after 1990
+
+  otherSongs <- filter(artist == "Aphex Twin") -- 1. Get all songs by  aphex twin
+             && limit(count == 100)            -- limit number of tracks in playlist
 #+end_src
 
 * Planned features
@@ -23,6 +28,8 @@ Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u play
      + [ ] =IN PROGRESS= Filter
      + [ ] Limit
      + [ ] Sort
+   + [ ] Variables
+     + [ ] union/intersection/etc.. for merging two sets of songs
 3. [ ] Evaluator that applies filters to song metadata.
 4. [ ] Filesystem code to copy/move matched files into target directories.
 5. [ ] Add playlist generation or metadata tagging features.
