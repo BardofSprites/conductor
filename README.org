@@ -12,6 +12,8 @@ Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u play
 
   otherSongs <- filter(artist == "Aphex Twin") -- 1. Get all songs by  aphex twin
              && limit(count == 100)            -- limit number of tracks in playlist
+
+  result <- write $ union(songs, otherSongs) -- merges the sets together
 #+end_src
 
 * Planned features
