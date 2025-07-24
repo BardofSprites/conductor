@@ -26,13 +26,15 @@ Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u play
      + [X] Fields (Title, Artist, etc)
      + [X] FieldType
      + [X] Comparison validations
-   + [ ] Parsers for commands
-     + [ ] =IN PROGRESS= Filter
-     + [ ] Limit
-     + [ ] Sort
+   + [X] Parsers for commands
+     + [X] Filter
+     + [X] Limit
+     + [X] Sort
+   + [ ] command chaining
+     + with boolean operators (&& and ||)
    + [ ] Variables
-     + [ ] union/intersection/etc.. for merging two sets of songs
+     + [ ] Merge module (union/intersection/etc.. for merging two sets of songs)
+     + [ ] writing to .m3u
 3. [ ] Evaluator that applies filters to song metadata.
-4. [ ] Filesystem code to copy/move matched files into target directories.
-5. [ ] Add playlist generation or metadata tagging features.
-6. [ ] CLI interface to specify source dirs, filters, and targets.
+4. [ ] Add playlist generation or metadata tagging features.
+5. [ ] CLI interface to specify source dirs, filters, and targets.
