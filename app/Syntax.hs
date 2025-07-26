@@ -3,7 +3,6 @@ module Syntax where
 import Text.Megaparsec
 import Text.Megaparsec.Char (char, string, space)
 import Data.Void
-import Control.Applicative ((<|>))
 import qualified Text.Megaparsec.Char.Lexer as L
  
 -- the comparison part: artist == "Artist Name"
@@ -17,6 +16,8 @@ data Comparison = Comparison
 data Operator = Eq | Neq | Gt | Lt | Gte | Lte
   deriving (Show, Eq)
 
+data LogicOperator = Or | And deriving (Show, Eq)
+
 data Value = StringVal String | NumberVal Int
   deriving (Show, Eq)
 
@@ -28,7 +29,6 @@ data FieldType = StringType | NumberType deriving (Show, Eq)
 fieldType :: Field -> FieldType
 fieldType Artist   = StringType
 fieldType Title    = StringType
-fieldType Artist   = StringType 
 fieldType Album    = StringType
 fieldType Genre    = StringType
 fieldType Year     = NumberType
@@ -38,7 +38,7 @@ fieldType Duration = NumberType
 -- (you can't have greater than artist)
 validOperation :: FieldType -> Operator -> Bool
 validOperation StringType op = op == Eq
-validOperator NumberType op = op `elem` [Eq, Neq, Gt, Lt, Gte, Lte]
+validOperation NumberType op = op `elem` [Eq, Neq, Gt, Lt, Gte, Lte]
 
 -- example: valMatchesField NumberType (StringVal "Queen")
 valMatchesField :: FieldType -> Value -> Bool
@@ -72,6 +72,7 @@ operatorParser =
   <|> (string "<=" >> return Lte)
 
 --  fields
+fieldParser :: Parser Field
 fieldParser =
   (string "artist" >> return Artist)
   <|> (string "title"    >> return Title) 
