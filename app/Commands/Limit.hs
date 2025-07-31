@@ -6,28 +6,39 @@ import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char (string)
 
-data LimitExpr = LimitExpr { lengthOption :: LengthOption }
-  deriving (Show, Eq)
-
-data LengthOption
-  = ByDuration      -- limit playlist length by duration of tracks
-  | ByCount         -- limit by number of tracks
-  | ByField C.Field -- limit by number of a specific field (e.g. artist)
-  deriving (Show, Eq)
+data LimitExpr = LimitExpr
+  { limitCount    :: Maybe Int
+  , limitDuration :: Maybe Int
+  , limitUnique   :: Maybe C.Field
+  } deriving (Show, Eq)
 
 type Parser = Parsec Void String
 
 paramsToLimitExpr :: [(String, C.Value)] -> Either String LimitExpr
 paramsToLimitExpr params = do
-  optVal <- P.lookupParam "length" params
-  lengthOpt <- case optVal of
-    C.StringVal "duration" -> Right ByDuration
-    C.StringVal "count"    -> Right ByCount
-    C.StringVal fieldName  -> case fieldFromString fieldName of
-      Just f  -> Right (ByField f)
-      Nothing -> Left $ "Invalid field for length: " ++ fieldName
-    _ -> Left $ "Invalid length value: " ++ show optVal
-  return $ LimitExpr lengthOpt
+  let countVal    = lookup "count" params
+      durationVal = lookup "duration" params
+      uniqueVal   = lookup "unique" params
+
+  limitCount <- case countVal of
+    Just (C.NumberVal n) -> Right (Just n)
+    Just _               -> Left "Expected number for count"
+    Nothing              -> Right Nothing
+
+  limitDuration <- case durationVal of
+    Just (C.NumberVal n) -> Right (Just n)
+    Just _               -> Left "Expected number for duration"
+    Nothing              -> Right Nothing
+
+  limitUnique <- case uniqueVal of
+    Just (C.StringVal s) ->
+      case fieldFromString s of
+        Just f  -> Right (Just f)
+        Nothing -> Left $ "Invalid field in unique: " ++ s
+    Just _  -> Left "Expected string for unique"
+    Nothing -> Right Nothing
+
+  return $ LimitExpr limitCount limitDuration limitUnique
 
 -- Helper to parse string to C.Field
 fieldFromString :: String -> Maybe C.Field
