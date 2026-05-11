@@ -4,7 +4,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Char (char, string, space)
 import Data.Void
 import qualified Text.Megaparsec.Char.Lexer as L
- 
+
 -- the comparison part: artist == "Artist Name"
 -- example:             field  op  value
 data Comparison = Comparison
@@ -49,7 +49,7 @@ valMatchesField _ _ = False
 validateComparison :: Comparison -> Either String Comparison
 validateComparison comp =
   let ftype = fieldType (field comp) -- extract field out of comp struct, find type
-      op = operator comp -- get the operator out of 
+      op = operator comp -- get the operator out of
       val = value comp
   in if validOperation ftype op && valMatchesField ftype val
         then Right comp
@@ -75,11 +75,11 @@ operatorParser =
 fieldParser :: Parser Field
 fieldParser =
   (string "artist" >> return Artist)
-  <|> (string "title"    >> return Title) 
-  <|> (string "artist"   >> return Artist) 
-  <|> (string "album"    >> return Album) 
-  <|> (string "genre"    >> return Genre) 
-  <|> (string "year"     >> return Year) 
+  <|> (string "title"    >> return Title)
+  <|> (string "artist"   >> return Artist)
+  <|> (string "album"    >> return Album)
+  <|> (string "genre"    >> return Genre)
+  <|> (string "year"     >> return Year)
   <|> (string "duration" >> return Duration)
   <?> "field name"
 
@@ -90,18 +90,17 @@ stringValParser = do
   content <- manyTill L.charLiteral (char '"') -- read until closed
   return $ StringVal content
 
--- 
 numberValParser :: Parser Value
 numberValParser = NumberVal <$> L.decimal
 
 valueParser :: Parser Value
-valueParser = stringValParser <|> numberValParser  
+valueParser = stringValParser <|> numberValParser
 
 comparisonParser :: Parser Comparison
 comparisonParser = do
-  field <- fieldParser
+  fld <- fieldParser
   space
   op <- operatorParser
   space
   val <- valueParser
-  return $ Comparison field op val
+  return $ Comparison fld op val

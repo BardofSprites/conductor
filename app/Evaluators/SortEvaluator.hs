@@ -1,4 +1,4 @@
-module SortEvaluator where
+module Evaluators.SortEvaluator where
 
 import Commands.Sort
 import Syntax
@@ -9,8 +9,8 @@ import Data.Ord (comparing)
 import Data.Maybe
 
 applySort :: SortExpr -> [Song] -> [Song]
-applySort (SortExpr field order) songs =
-  case field of
+applySort (SortExpr fld order) songs =
+  case fld of
     Artist   -> sortBy (compareField order artist) songs
     Title    -> sortBy (compareField order title) songs
     Album    -> sortBy (compareField order album) songs

@@ -1,9 +1,7 @@
 module Commands.Filter where
 
 import qualified Syntax as C
-import Data.Void
-import Text.Megaparsec
-import Text.Megaparsec.Char (char, string, space, letterChar)
+import Text.Megaparsec.Char (char, string)
 
 type Filter = C.Comparison
 
@@ -13,9 +11,7 @@ data FilterExpr
   | Or  FilterExpr FilterExpr
   deriving (Show, Eq)
 
-type Parser = Parsec Void String
-
-filterParser :: Parser Filter
+filterParser :: C.Parser Filter
 filterParser = do
   _ <- string "filter"
   _ <- char '('

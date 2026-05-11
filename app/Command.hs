@@ -1,16 +1,12 @@
 module Command where
 
 import qualified Syntax as C
-import qualified Commands.Filter as F
 import qualified Commands.Sort as S
 import qualified Commands.Limit as L
 import qualified Parameters as P
 
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import Data.Void
-
-type Parser = Parsec Void String
 
 data Command
   = FilterCmd C.Comparison
@@ -24,7 +20,7 @@ data CommandExpr
   | CommandOr CommandExpr CommandExpr
   deriving (Show, Eq)
 
-filterCommandParser :: Parser CommandExpr
+filterCommandParser :: C.Parser CommandExpr
 filterCommandParser = do
   _ <- string "filter"
   space
@@ -33,7 +29,7 @@ filterCommandParser = do
     Right c -> return $ CommandLeaf (FilterCmd c)
     Left err -> fail err
 
-sortCommandParser :: Parser CommandExpr
+sortCommandParser :: C.Parser CommandExpr
 sortCommandParser = do
   _ <- string "sort"
   params <- P.paramsParser
@@ -41,7 +37,7 @@ sortCommandParser = do
     Right expr -> return $ CommandLeaf (SortCmd expr)
     Left err -> fail err
 
-limitCommandParser :: Parser CommandExpr
+limitCommandParser :: C.Parser CommandExpr
 limitCommandParser = do
   _ <- string "limit"
   params <- P.paramsParser
@@ -49,13 +45,13 @@ limitCommandParser = do
     Right expr -> return $ CommandLeaf (LimitCmd expr)
     Left err -> fail err
 
-commandAtomParser :: Parser CommandExpr
+commandAtomParser :: C.Parser CommandExpr
 commandAtomParser = try filterCommandParser
                 <|> try sortCommandParser
                 <|> limitCommandParser
                 <?> "command"
 
-commandAndParser :: Parser CommandExpr
+commandAndParser :: C.Parser CommandExpr
 commandAndParser = do
   left <- commandAtomParser
   rest <- many $ try $ do      -- <--- try added here
@@ -66,8 +62,7 @@ commandAndParser = do
     return right
   return $ foldl CommandAnd left rest
 
-
-commandExprParser :: Parser CommandExpr
+commandExprParser :: C.Parser CommandExpr
 commandExprParser = do
   left <- commandAndParser
   rest <- many $ try $ do      -- <--- try added here

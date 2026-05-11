@@ -1,13 +1,13 @@
-module LimitEvaluator where
+module Evaluators.LimitEvaluator where
 
 import Commands.Limit
 import Syntax
 import Song
-import Data.Maybe (catMaybes)
+import qualified Data.Set as Set
 
--- applyLimit :: LimitExpr -> [Song] -> [Song]
--- applyLimit (LimitExpr mCount mDuration mUnique) =
---   applyCount mCount . applyDuration mDuration . applyUnique mUnique
+applyLimit :: LimitExpr -> [Song] -> [Song]
+applyLimit (LimitExpr mCount mDuration mUnique) =
+  applyCount mCount . applyDuration mDuration . applyUnique mUnique
 
 applyCount :: Maybe Int -> [Song] -> [Song]
 applyCount Nothing  = id

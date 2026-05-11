@@ -20,17 +20,17 @@ paramsToLimitExpr params = do
       durationVal = lookup "duration" params
       uniqueVal   = lookup "unique" params
 
-  limitCount <- case countVal of
+  cnt <- case countVal of
     Just (C.NumberVal n) -> Right (Just n)
     Just _               -> Left "Expected number for count"
     Nothing              -> Right Nothing
 
-  limitDuration <- case durationVal of
+  dur <- case durationVal of
     Just (C.NumberVal n) -> Right (Just n)
     Just _               -> Left "Expected number for duration"
     Nothing              -> Right Nothing
 
-  limitUnique <- case uniqueVal of
+  uniq <- case uniqueVal of
     Just (C.StringVal s) ->
       case fieldFromString s of
         Just f  -> Right (Just f)
@@ -38,7 +38,7 @@ paramsToLimitExpr params = do
     Just _  -> Left "Expected string for unique"
     Nothing -> Right Nothing
 
-  return $ LimitExpr limitCount limitDuration limitUnique
+  return $ LimitExpr cnt dur uniq
 
 -- Helper to parse string to C.Field
 fieldFromString :: String -> Maybe C.Field
