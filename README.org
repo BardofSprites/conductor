@@ -32,12 +32,19 @@ Something like this will produce a [[https://en.wikipedia.org/wiki/M3U][m3u play
      + [X] Sort
    + [X] command chaining
      + with boolean operators (&& and ||)
-3. [-] Evaluator that applies filters to song metadata.
+3. [X] Evaluator that applies filters to song metadata.
    + [X] Sort
    + [X] Filter
-   + [ ] =IN PROGRESS= Limit
-4. [ ] Variables
+   + [X] Limit
+4. [X] Testing (not done yet, but need to write more)
+   + [X] parser tests
+   + [X] evaluator
+5. [ ] Variables
    + [ ] Merge module (union/intersection/etc.. for merging two sets of songs)
-   + [ ] writing to .m3u
-5. [ ] Add playlist generation or metadata tagging features.
-6. [ ] CLI interface to specify source dirs, filters, and targets.
+6. [ ] Reading the actual file for syntax
+7. [ ] Add playlist generation
+   + writing to .m3u
+8. [ ] CLI interface to specify source dirs, filters, and targets.
+9. [ ] Q.O.L. Upgrades
+   + [ ] proper duration syntax (1m30s)
+   + [ ] simple syntax highlighting for Emacs?
