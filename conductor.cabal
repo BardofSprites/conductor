@@ -80,8 +80,12 @@ executable conductor
 
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.17.2.1,
+                      containers >= 0.6.7,
+                      directory,
+                      filepath,
+                      megaparsec,
                       taglib,
-                      megaparsec
+                      unix >= 2.7.3
 
     -- Directories containing source files.
     hs-source-dirs:   app
