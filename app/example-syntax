@@ -1,3 +1,5 @@
+songDir <- "/home/bard/Music/EDM"
+
 songs <- filter(artist == "Nujabes")
       || filter(genre == "Hip Hop")
       && limit(year > 1990)
