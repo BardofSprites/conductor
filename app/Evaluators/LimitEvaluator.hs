@@ -22,20 +22,21 @@ applyDuration (Just limitTime) = takeWhileAcc 0
       | acc + fromIntegral (duration s) <= limitTime = s : takeWhileAcc (acc + fromIntegral (duration s)) ss
       | otherwise = []
 
-applyUnique :: Nothing = id
+applyUnique :: Maybe Field -> [Song] -> [Song]
+applyUnique Nothing = id
+applyUnique (Just fld) = go Set.empty
+  where
+    go _ [] = []
+    go seen (s:ss) =
+      let key = extractFieldValue fld s
+      in if key `Set.member` seen
+         then go seen ss
+         else s : go (Set.insert key seen) ss
 
--- testFunc :: IO ()
--- testFunc = do
---   song1 <- readSong "/home/bard/Music/Phonk/KSLV Noh - Chase.mp3"
---   song2 <- readSong "/home/bard/Music/HipHop/MINMI - 四季ノ唄.mp3"
---   song3 <- readSong "/home/bard/Music/EDM/Daft Punk - Around the World.mp3"
-
---   let maybeSongs = [song1, song2, song3]
---       mySongs = catMaybes maybeSongs
---       myLimitedSongs = applyDuration (Just 425) mySongs
-
---   mapM_ print maybeSongs
---   mapM_ printFormatted myLimitedSongs
-
--- printFormatted song = putStrLn (artist song ++ " - " ++ title song ++ " (" ++ show (duration song) ++ ")")
-  
+extractFieldValue :: Field -> Song -> String
+extractFieldValue Artist   = artist
+extractFieldValue Title    = title
+extractFieldValue Album    = album
+extractFieldValue Genre    = genre
+extractFieldValue Year     = show . year
+extractFieldValue Duration = show . duration
